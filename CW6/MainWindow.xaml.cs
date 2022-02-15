@@ -26,12 +26,12 @@ namespace CW6
         public MainWindow()
         {
             InitializeComponent();
-            cn = new OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=|DataDirectory|\Database1.accdb");
+            cn = new OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=|DataDirectory|/Database1.accdb");
         }
 
         private void AssetButton_Click(object sender, RoutedEventArgs e)
         {
-            string query = "select* from Assets";
+            string query = "SELECT * FROM Assets";
             OleDbCommand cmd = new OleDbCommand(query, cn);
             cn.Open();
             OleDbDataReader read = cmd.ExecuteReader();
@@ -39,8 +39,27 @@ namespace CW6
             while (read.Read())
             {
                 data += read[0].ToString() + "\n";
+                data += read[1] + "\n";
+                data += read[2] + "\n" + "\n";
             }
             TextBox1.Text = data;
+            cn.Close();
+        }
+
+        private void EmployeeButton_Click(object sender, RoutedEventArgs e)
+        {
+            string query = "SELECT * FROM Employees";
+            OleDbCommand cmd = new OleDbCommand(query, cn);
+            cn.Open();
+            OleDbDataReader read = cmd.ExecuteReader();
+            string data = "";
+            while (read.Read())
+            {
+                data += read[0].ToString() + "\n";
+                data += read[1] + " " + read[2] + "\n" + "\n";
+            }
+            TextBox1.Text = data;
+            cn.Close();
         }
     }
 }
